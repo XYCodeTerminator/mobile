@@ -43,13 +43,7 @@ public class MainApplication extends MultiDexApplication implements ShareApplica
                     new RNSharePackage(),
                     new RCTPdfView(),
                     new RNFetchBlobPackage(),
-                    new RNTooltipsPackage(),
                     new MapsPackage(),
-                    new RNLoggingPackage(),
-                    new RNTranslationManagerPackage(),
-                    new RNCurrencyManagerPackage(),
-                    new RNDeviceInfoPackage(),
-                    new RNCardManagerPackage(),
                     new RNReverseGeocodePackage(),
                     new RNGestureHandlerPackage()
             );
