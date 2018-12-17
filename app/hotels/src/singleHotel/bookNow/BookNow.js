@@ -1,7 +1,12 @@
 // @flow strict
 
 import * as React from 'react';
-import { StyleSheet, Button, ButtonTitle } from '@kiwicom/mobile-shared';
+import {
+  StyleSheet,
+  Button,
+  ButtonTitle,
+  Logger,
+} from '@kiwicom/mobile-shared';
 import { defaultTokens } from '@kiwicom/mobile-orbit';
 import {
   withNavigation,
@@ -26,11 +31,24 @@ type Props = {
   +navigation: NavigationType,
   +currency: string,
   +hotelId: ?string,
+  +getGuestCount: () => number,
+  +numberOfRooms: number,
+  +price: {|
+    +amount: number,
+    +currency: string,
+  |},
 };
 
 export class BookNow extends React.Component<Props> {
   handleGoToPayment = () => {
-    const hotelId = this.props.hotelId;
+    const { hotelId, getGuestCount, numberOfRooms, price } = this.props;
+    Logger.hotelsBookNowPressed(
+      hotelId || '',
+      numberOfRooms,
+      getGuestCount(),
+      price.amount,
+      `${price.currency} ${price.amount}`,
+    );
     if (hotelId != null) {
       this.props.navigation.navigate('Payment', {
         hotelId,
@@ -52,12 +70,19 @@ export class BookNow extends React.Component<Props> {
   }
 }
 
-const select = ({ currency, hotelId }: HotelsContextState) => ({
+const select = ({ currency, hotelId, getGuestCount }: HotelsContextState) => ({
   currency,
   hotelId,
+  getGuestCount,
 });
-const selectHotelDetailScreen = ({ selected }: HotelDetailScreenState) => ({
+const selectHotelDetailScreen = ({
   selected,
+  numberOfRooms,
+  price,
+}: HotelDetailScreenState) => ({
+  selected,
+  numberOfRooms,
+  price,
 });
 
 export default withHotelDetailScreenContext(selectHotelDetailScreen)(
